@@ -17,6 +17,9 @@ COPY tsconfig.json ./
 # Build TypeScript code
 RUN npm run build
 
+# Copy the JSON file into the dist directory
+COPY app/asone-app-firebase-adminsdk-ueegw-d42ccfd758.json ./dist/
+
 # Expose the port the app runs on
 EXPOSE 3000
 

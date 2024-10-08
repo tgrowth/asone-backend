@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Firebase Auth Test</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+  </head>
+  <body>
+    <button id="signIn">Sign In with Google</button>
+    <pre id="token"></pre>
+
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyAQ-TdNIaEIzwe2K-A_E026Gq0tVD36Fzw",
+        authDomain: "asone-app.firebaseapp.com",
+        projectId: "asone-app",
+        storageBucket: "asone-app.appspot.com",
+        messagingSenderId: "320464996938",
+        appId: "1:320464996938:web:e45d854785217e7ea7f4b3",
+        measurementId: "G-G5H59TSKKV",
+      };
+
+      firebase.initializeApp(firebaseConfig);
+
+      document.getElementById("signIn").addEventListener("click", () => {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        firebase
+          .auth()
+          .signInWithPopup(provider)
+          .then((result) => {
+            return result.user.getIdToken();
+          })
+          .then((token) => {
+            document.getElementById("token").textContent = token;
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      });
+    </script>
+  </body>
+</html>
