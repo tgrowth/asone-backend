@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from "typeorm";
+import { UserInfo } from "./UserInfo.js";
 
 @Entity()
 export class User {
@@ -10,4 +11,7 @@ export class User {
 
   @Column()
   email!: string;
+
+  @OneToOne(() => UserInfo, (userInfo) => userInfo.user, { lazy: true })
+  userInfo!: Promise<UserInfo>;
 }
