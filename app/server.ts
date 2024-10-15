@@ -4,11 +4,13 @@ import { DataSource } from "typeorm";
 import { User } from "./models/User.js";
 import authRoutes from "./routes/AuthRoutes.js";
 import userInfoRoutes from "./routes/UserInfoRoutes.js";
+import loveLanguagesRoutes from "./routes/LoveLanguagesRoutes.js";
 import admin from "firebase-admin";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import fs from "fs";
 import { UserInfo } from "./models/UserInfo.js";
+import { LoveLanguagesResult } from "./models/LoveLanguagesResult.js";
 
 dotenv.config();
 
@@ -47,7 +49,7 @@ const AppDataSource = new DataSource({
   database: "asone_db",
   synchronize: true,
   logging: true,
-  entities: [User, UserInfo],
+  entities: [User, UserInfo, LoveLanguagesResult],
 });
 
 AppDataSource.initialize()
@@ -95,6 +97,7 @@ AppDataSource.initialize()
 
     app.use("/auth", authRoutes);
     app.use("/userInfo", userInfoRoutes);
+    app.use("/love_languages_results", loveLanguagesRoutes);
 
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
