@@ -39,7 +39,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const AppDataSource = new DataSource({
   type: "postgres",
-  host: process.env.DB_HOST,
+  host: "asone-postgres-db.cvgkuegmoles.us-east-1.rds.amazonaws.com",
   ssl: {
     rejectUnauthorized: false,
   },
