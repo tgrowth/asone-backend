@@ -16,6 +16,9 @@ export class LoveLanguagesResult {
   @Column("smallint", { array: true })
   language_ids!: number[];
 
-  @Column("integer", { array: true })
+  @Column("double precision", { array: true })
   percentages!: number[];
+
+  @Column("integer")
+  quiz_id!: number;
 }
