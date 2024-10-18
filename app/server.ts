@@ -106,7 +106,6 @@ AppDataSource.initialize()
 🌐 http://localhost:${PORT}
 ⏰ ${new Date().toLocaleString()}
 🛣  Available Routes:
-   - /auth
    - /signin (POST)
 
 👨‍💻 Happy coding!
