@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post("/:id", async (req, res) => {
   const userId = parseInt(req.params.id);
-  const { quizResult, user_id, quiz_id } = req.body;
+  const { quizResult, user_id, quiz_id, isComplete } = req.body;
   const loveLanguagesResultRepository =
     AppDataSource.getRepository(LoveLanguagesResult);
 
@@ -64,12 +64,20 @@ router.post("/:id", async (req, res) => {
     loveLanguagesResult.percentages = percentages;
     loveLanguagesResult.test_date = new Date();
     loveLanguagesResult.quiz_id = quiz_id;
+    loveLanguagesResult.isComplete = isComplete;
 
     await loveLanguagesResultRepository.save(loveLanguagesResult);
 
     res.status(200).json({
       message: "Love languages result saved successfully",
-      result: loveLanguagesResult,
+      result: {
+        user_id: loveLanguagesResult.user_id,
+        test_date: loveLanguagesResult.test_date,
+        language_ids: loveLanguagesResult.language_ids,
+        percentages: loveLanguagesResult.percentages,
+        quiz_id: loveLanguagesResult.quiz_id,
+        isComplete: loveLanguagesResult.isComplete,
+      },
     });
   } catch (error) {
     console.error("Error saving love languages result:", error);
@@ -101,9 +109,14 @@ router.get("/:id", async (req, res) => {
       test_date: loveLanguagesResult.test_date,
       language_ids: loveLanguagesResult.language_ids,
       percentages: loveLanguagesResult.percentages,
+      quiz_id: loveLanguagesResult.quiz_id,
+      isComplete: loveLanguagesResult.isComplete,
     };
 
-    res.status(200).json(result);
+    res.status(200).json({
+      message: "Love languages result retrieved successfully",
+      result: result,
+    });
   } catch (error) {
     console.error("Error retrieving love languages result:", error);
     res.status(500).json({

@@ -21,4 +21,7 @@ export class LoveLanguagesResult {
 
   @Column("integer")
   quiz_id!: number;
+
+  @Column("boolean", { default: false })
+  isComplete!: boolean;
 }
