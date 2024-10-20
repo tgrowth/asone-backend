@@ -63,4 +63,16 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.get("/", async (req, res) => {
+  const userInfoRepository = AppDataSource.getRepository(UserInfo);
+
+  try {
+    const users = await userInfoRepository.find();
+    res.status(200).json({ users });
+  } catch (error) {
+    console.error("Error retrieving user info:", error);
+    res.status(500).json({ message: "Error retrieving user info" });
+  }
+});
+
 export default router;

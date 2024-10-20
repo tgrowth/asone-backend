@@ -26,11 +26,11 @@ router.post("/:id", async (req, res) => {
     }
 
     const languageMap = {
-      "Quality Time": 4,
       "Words of Affirmation": 1,
-      "Receiving Gifts": 3,
-      "Physical Touch": 5,
       "Acts of Service": 2,
+      "Receiving Gifts": 3,
+      "Quality Time": 4,
+      "Physical Touch": 5
     };
 
     const sortedResults = Object.entries(quizResult)
@@ -43,13 +43,11 @@ router.post("/:id", async (req, res) => {
     const languageIds = sortedResults.map((result) => result.languageId);
     const percentages = sortedResults.map((result) => result.percentage);
 
-    const totalPercentage = percentages.reduce(
-      (sum, percentage) => sum + percentage,
-      0
-    );
-    if (Math.abs(totalPercentage - 100) > 0.01) {
-      return res.status(400).json({ message: "Percentages must sum to 100" });
-    }
+    // const totalPercentage = percentages.reduce(
+    //   (sum, percentage) => sum + percentage, 0);
+    // if (Math.abs(totalPercentage - 100) > 0.01) {
+    //   return res.status(400).json({ message: "Percentages must sum to 100" });
+    // }
 
     let loveLanguagesResult = await loveLanguagesResultRepository.findOne({
       where: { user_id: userId },
@@ -104,18 +102,19 @@ router.get("/:id", async (req, res) => {
         .json({ message: "Love languages result not found for this user" });
     }
 
-    const result = {
-      user_id: loveLanguagesResult.user_id,
-      test_date: loveLanguagesResult.test_date,
-      language_ids: loveLanguagesResult.language_ids,
-      percentages: loveLanguagesResult.percentages,
-      quiz_id: loveLanguagesResult.quiz_id,
-      isComplete: loveLanguagesResult.isComplete,
-    };
-
     res.status(200).json({
       message: "Love languages result retrieved successfully",
-      result: result,
+      user_id: loveLanguagesResult.user_id,
+      quiz_id: loveLanguagesResult.quiz_id,
+      quizResult: {
+        "Words of Affirmation": loveLanguagesResult.percentages[0],
+        "Acts of Service": loveLanguagesResult.percentages[1],
+        "Receiving Gifts": loveLanguagesResult.percentages[2],
+        "Quality Time": loveLanguagesResult.percentages[3],
+        "Physical Touch": loveLanguagesResult.percentages[4],
+      },
+      isComplete: loveLanguagesResult.isComplete,
+      test_date: loveLanguagesResult.test_date,
     });
   } catch (error) {
     console.error("Error retrieving love languages result:", error);
