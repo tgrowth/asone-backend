@@ -2,7 +2,7 @@ import express from "express";
 import admin from "firebase-admin";
 import { AppDataSource } from "../server.js";
 import { User } from "../models/User.js";
-import { hash } from "crypto";
+import { hash } from "bcrypt";
 
 const router = express.Router();
 
