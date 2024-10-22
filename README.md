@@ -16,19 +16,13 @@ Once the AWS user is created, you can deploy the server using Terraform.
 2. Navigate to the `terraform` folder:
     
     ```bash
-    bash
-    Copy code
     cd terraform
-    
     ```
     
 3. Run the following command to apply the Terraform configuration and update the server:
     
     ```bash
-    bash
-    Copy code
     terraform apply
-    
     ```
     
 
