@@ -7,10 +7,16 @@ export class User {
   id!: number;
 
   @Column()
+  uid!: string;
+
+  @Column()
   name!: string;
 
   @Column()
   email!: string;
+
+  @Column()
+  password!: string;
 
   @OneToOne(() => UserInfo, (userInfo) => userInfo.user, { lazy: true })
   userInfo!: Promise<UserInfo>;

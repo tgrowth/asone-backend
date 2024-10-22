@@ -30,10 +30,6 @@ admin.initializeApp({
 
 const app = express();
 
-app.get("/health", (req, res) => {
-  res.status(200).json({ status: "healthy" });
-});
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -56,45 +52,6 @@ AppDataSource.initialize()
   .then(() => {
     console.log("📦 Connected to database successfully");
 
-    app.post("/signin", async (req, res) => {
-      const authHeader = req.headers.authorization;
-
-      if (!authHeader) {
-        return res
-          .status(400)
-          .json({ message: "Authorization header is missing" });
-      }
-
-      const token = authHeader.split(" ")[1];
-
-      if (!token) {
-        return res
-          .status(400)
-          .json({ message: "Token is missing from Authorization header" });
-      }
-
-      try {
-        const decodedToken = await admin.auth().verifyIdToken(token);
-        const { name, email } = decodedToken;
-
-        const userRepository = AppDataSource.getRepository(User);
-        let user = await userRepository.findOne({ where: { email } });
-
-        if (!user) {
-          user = userRepository.create({ name, email });
-          await userRepository.save(user);
-        }
-
-        res.status(200).json({
-          message: "User authenticated and saved successfully",
-          user,
-        });
-      } catch (error) {
-        console.error("Error authenticating user:", error);
-        res.status(401).json({ message: "Authentication failed" });
-      }
-    });
-
     app.use("/auth", authRoutes);
     app.use("/userInfo", userInfoRoutes);
     app.use("/love_languages_results", loveLanguagesRoutes);
@@ -106,7 +63,7 @@ AppDataSource.initialize()
 🌐 http://localhost:${PORT}
 ⏰ ${new Date().toLocaleString()}
 🛣  Available Routes:
-   - /signin (POST)
+   -
 
 👨‍💻 Happy coding!
       `);
