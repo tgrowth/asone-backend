@@ -63,7 +63,7 @@ router.post("/signup", async (req, res) => {
             return res.status(400).json({ message: "User already exists" });
         }
 
-        const hashedPassword = hash(password, "sha256");
+        const hashedPassword = await hash(password, 10);
 
         const user = userRepository.create({ uid, name, email, password: hashedPassword });
         await userRepository.save(user);
@@ -128,30 +128,30 @@ router.post("/forgot-password", async (req, res) => {
 });
 
 router.post("/reset-password", async (req, res) => {
-    const { email } = req.body;
-    
-    if (!email) {
-        return res.status(400).json({ message: "Email is required" });
+    const { token, password } = req.body;
+
+    if (!token || !password) {
+        return res
+        .status(400)
+        .json({ message: "Token and password are required" });
     }
-    
+
     try {
+        const decodedToken = await admin.auth().verifyIdToken(token);
+        const { email } = decodedToken;
+
         const userRepository = AppDataSource.getRepository(User);
         const user = await userRepository.findOne({ where: { email } });
-    
+
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-    
-        const newPassword = Math.random().toString(36).slice(-8);
-        const hashedPassword = hash(newPassword, "sha256");
-    
+
+        const hashedPassword = await hash(password, 10);
         user.password = hashedPassword;
         await userRepository.save(user);
-    
-        res.status(200).json({
-            message: "Password reset successful",
-            newPassword,
-        });
+
+        res.status(200).json({ message: "Password reset successful" });
     } catch (error) {
         console.error("Error resetting password:", error);
         res.status(500).json({ message: "Error resetting password" });
