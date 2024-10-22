@@ -6,7 +6,7 @@ First, you need to install Terraform on your system. Follow the official install
 
 ### 2. Create a User on AWS
 
-You will need to request Taalaai to create an AWS user for you. Taalaai is the owner and has the permissions required to create users. Note that I am an admin but do not have deployment rights to create users.
+You will need to send a request to create an AWS user for you.
 
 ### 3. Deploy the Server
 
