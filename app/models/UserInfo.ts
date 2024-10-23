@@ -6,6 +6,7 @@ import {
   JoinColumn,
 } from "typeorm";
 
+
 @Entity()
 export class UserInfo {
   @PrimaryGeneratedColumn()
@@ -15,36 +16,54 @@ export class UserInfo {
   @JoinColumn()
   user!: Promise<any>;
 
-  @Column({ default: false })
+  @Column()
+  uid!: string;
+
+  @Column()
+  username!: string;
+
+  @Column({ nullable: true })
+  avatar!: string;
+
+  @Column()
   isUsingForSelf!: boolean;
 
-  @Column({ nullable: true })
-  code!: string;
+  @Column()
+  birthday!: string;
 
-  @Column({ nullable: true })
-  birthday!: Date;
+  @Column()
+  state!: string;
 
-  @Column({ nullable: true })
+  @Column()
   periodLength!: number;
 
-  @Column({ nullable: true })
+  @Column()
   cycleLength!: number;
 
-  @Column({ nullable: true })
-  lastPeriodDate!: Date;
+  @Column()
+  lastPeriodStartDate!: string;
 
-  @Column({ default: false })
+  @Column()
+  lastPeriodEndDate!: string;
+
+  @Column()
   isTryingToConceive!: boolean;
 
-  @Column({ default: false })
-  isPartnerMode!: boolean;
+  @Column()
+  mood!: string;
+
+  @Column()
+  symptoms!: string;
+
+  @Column()
+  partnerMode!: boolean;
 
   @Column({ nullable: true })
-  partnerEmail!: string;
+  partnerUid!: string;
 
-  @Column({ nullable: true })
-  inviteCode!: string;
+  @Column()
+  code!: string;
 
-  @Column({ default: false })
+  @Column()
   isComplete!: boolean;
 }

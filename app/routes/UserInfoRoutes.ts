@@ -3,21 +3,21 @@ import { AppDataSource } from "../server.js";
 import { User } from "../models/User.js";
 import { UserInfo } from "../models/UserInfo.js";
 
-const router = express.Router();
+const router = express.Router();  
 
-router.post("/:id", async (req, res) => {
-  const userId = parseInt(req.params.id);
+router.post("/:uid", async (req, res) => {
+  const userId = req.params.uid;
   const userRepository = AppDataSource.getRepository(User);
   const userInfoRepository = AppDataSource.getRepository(UserInfo);
 
   try {
-    const user = await userRepository.findOne({ where: { id: userId } });
+    const user = await userRepository.findOne({ where: { uid: userId } });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
     let userInfo = await userInfoRepository.findOne({
-      where: { user: { id: userId } },
+      where: { user: { uid: userId } },
     });
 
     if (!userInfo) {
@@ -37,19 +37,13 @@ router.post("/:id", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
-  const userId = parseInt(req.params.id);
-  const userRepository = AppDataSource.getRepository(User);
+router.get("/:uid", async (req, res) => {
+  const userId = req.params.uid;
   const userInfoRepository = AppDataSource.getRepository(UserInfo);
 
   try {
-    const user = await userRepository.findOne({ where: { id: userId } });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
     const userInfo = await userInfoRepository.findOne({
-      where: { user: { id: userId } },
+      where: { uid: userId },
     });
 
     if (!userInfo) {
@@ -67,8 +61,8 @@ router.get("/", async (req, res) => {
   const userInfoRepository = AppDataSource.getRepository(UserInfo);
 
   try {
-    const users = await userInfoRepository.find();
-    res.status(200).json({ users });
+    const userInfos = await userInfoRepository.find();
+    res.status(200).json({ userInfos });
   } catch (error) {
     console.error("Error retrieving user info:", error);
     res.status(500).json({ message: "Error retrieving user info" });
