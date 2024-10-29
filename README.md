@@ -31,4 +31,4 @@ Once the AWS user is created, you can deploy the server using Terraform.
 
 ### 4. Testing
 
-After running `terraform apply`, the server will be updated and ready for testing in about 8-9 minutes. You can begin testing approximately 10 minutes after deploying.
+After running `terraform apply`, `terraform apply --auto-approve` the server will be updated and ready for testing in about 8-9 minutes. You can begin testing approximately 10 minutes after deploying. 
