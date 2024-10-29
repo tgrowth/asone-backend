@@ -1,16 +1,20 @@
 import express from "express";
 import dotenv from "dotenv";
-import { DataSource } from "typeorm";
-import { User } from "./models/User.js";
+import admin from "firebase-admin";
+import fs from "fs";
 import authRoutes from "./routes/AuthRoutes.js";
 import userInfoRoutes from "./routes/UserInfoRoutes.js";
 import loveLanguagesRoutes from "./routes/LoveLanguagesRoutes.js";
 import userRoutes from "./routes/UserRoutes.js";
-import admin from "firebase-admin";
+import symptomRoutes from "./routes/SymptomRoutes.js";
+import periodLogRoutes from "./routes/PeriodLogRoutes.js";
+import { DataSource } from "typeorm";
+import { User } from "./models/User.js";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
-import fs from "fs";
 import { UserInfo } from "./models/UserInfo.js";
+import { Symptom } from "./models/Symptom.js";
+import { PeriodLog } from "./models/PeriodLog.js";
 import { LoveLanguagesResult } from "./models/LoveLanguagesResult.js";
 
 dotenv.config();
@@ -46,7 +50,7 @@ const AppDataSource = new DataSource({
   database: "asone_db",
   synchronize: true,
   logging: true,
-  entities: [User, UserInfo, LoveLanguagesResult],
+  entities: [User, UserInfo, LoveLanguagesResult, Symptom, PeriodLog],
 });
 
 AppDataSource.initialize()
@@ -57,6 +61,8 @@ AppDataSource.initialize()
     app.use("/userInfo", userInfoRoutes);
     app.use("/user", userRoutes);
     app.use("/love_languages_results", loveLanguagesRoutes);
+    app.use("/symptoms", symptomRoutes);
+    app.use("/period_logs", periodLogRoutes);
 
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
@@ -65,7 +71,12 @@ AppDataSource.initialize()
 🌐 http://localhost:${PORT}
 ⏰ ${new Date().toLocaleString()}
 🛣  Available Routes:
-   -
+    - /auth
+    - /userInfo
+    - /user
+    - /love_languages_results
+    - /symptoms
+    - /period_logs
 
 👨‍💻 Happy coding!
       `);

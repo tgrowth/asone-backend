@@ -5,35 +5,26 @@ import { UserInfo } from "../models/UserInfo.js";
 
 const router = express.Router();  
 
-router.post("/:uid", async (req, res) => {
-  const userId = req.params.uid;
-  const userRepository = AppDataSource.getRepository(User);
+router.post("/", async (req, res) => {
+  const uid = req.body.uid;
   const userInfoRepository = AppDataSource.getRepository(UserInfo);
 
   try {
-    const user = await userRepository.findOne({ where: { uid: userId } });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    let userInfo = await userInfoRepository.findOne({
-      where: { user: { uid: userId } },
-    });
+    let userInfo = await userInfoRepository.findOne({ where: { uid: uid } });
 
     if (!userInfo) {
-      const newUserInfo = new UserInfo();
-      Object.assign(newUserInfo, req.body);
-      newUserInfo.user = Promise.resolve(user);
-      userInfo = await userInfoRepository.save(newUserInfo);
+      userInfo = new UserInfo();
+      Object.assign(userInfo, req.body);
+      userInfo.uid = uid;
     } else {
-      userInfoRepository.merge(userInfo, req.body);
-      userInfo = await userInfoRepository.save(userInfo);
+      Object.assign(userInfo, req.body);
     }
 
-    res.status(200).json({ message: "User info saved successfully", userInfo });
+    userInfo = await userInfoRepository.save(userInfo);
+    res.status(201).json({ userInfo });
   } catch (error) {
-    console.error("Error saving user info:", error);
-    res.status(500).json({ message: "Error saving user info" });
+    console.error("Error creating user info:", error);
+    res.status(500).json({ message: "Error creating user info" });
   }
 });
 
@@ -57,6 +48,24 @@ router.get("/:uid", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  const userInfoId = parseInt(req.params.id);
+  const userInfoRepository = AppDataSource.getRepository(UserInfo);
+
+  try {
+    const userInfo = await userInfoRepository.findOne({ where: { id: userInfoId } });
+    if (!userInfo) {
+      return res.status(404).json({ message: "User info not found" });
+    }
+
+    await userInfoRepository.remove(userInfo);
+    res.status(200).json({ message: "User info deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting user info:", error);
+    res.status(500).json({ message: "Error deleting user info" });
+  }
+});
+
 router.get("/", async (req, res) => {
   const userInfoRepository = AppDataSource.getRepository(UserInfo);
 
@@ -66,6 +75,30 @@ router.get("/", async (req, res) => {
   } catch (error) {
     console.error("Error retrieving user info:", error);
     res.status(500).json({ message: "Error retrieving user info" });
+  }
+});
+
+router.post("/:uid/symptoms/:symptomId", async (req, res) => {
+  const userId = req.params.uid;
+  const symptomId = parseInt(req.params.symptomId);
+  const userInfoRepository = AppDataSource.getRepository(UserInfo);
+
+  try {
+    const userInfo = await userInfoRepository.findOne({
+      where: { user: { uid: userId } },
+    });
+
+    if (!userInfo) {
+      return res.status(404).json({ message: "User info not found" });
+    }
+
+    userInfo.symptoms = [...userInfo.symptoms, symptomId];
+    await userInfoRepository.save(userInfo);
+
+    res.status(200).json({ message: "Symptom added to user info", userInfo });
+  } catch (error) {
+    console.error("Error adding symptom to user info:", error);
+    res.status(500).json({ message: "Error adding symptom to user info" });
   }
 });
 
