@@ -1,6 +1,5 @@
 import express from "express";
 import { AppDataSource } from "../server.js";
-import { User } from "../models/User.js";
 import { UserInfo } from "../models/UserInfo.js";
 
 const router = express.Router();  
@@ -66,6 +65,24 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+router.patch("/:uid", async (req, res) => {
+  try {
+    const uid = req.params.uid;
+    const { cycleLength, periodLength } = req.body;
+
+    const updatedUser = await AppDataSource.getRepository(UserInfo).update({ uid }, { cycleLength, periodLength });
+    
+    if (!updatedUser) {
+        return res.status(404).json({ error: 'User not found' });
+    }
+      
+    res.status(200).json({ message: 'User information updated successfully' });
+  } catch (error) {
+    console.error('Failed to update user info:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 router.get("/", async (req, res) => {
   const userInfoRepository = AppDataSource.getRepository(UserInfo);
 
@@ -79,27 +96,62 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/:uid/symptoms/:symptomId", async (req, res) => {
-  const userId = req.params.uid;
+  const uid = req.params.uid;
   const symptomId = parseInt(req.params.symptomId);
   const userInfoRepository = AppDataSource.getRepository(UserInfo);
 
   try {
-    const userInfo = await userInfoRepository.findOne({
-      where: { user: { uid: userId } },
-    });
+    const userInfo = await userInfoRepository.findOne({ where: { uid: uid } });
 
     if (!userInfo) {
       return res.status(404).json({ message: "User info not found" });
     }
 
-    userInfo.symptoms = [...userInfo.symptoms, symptomId];
-    await userInfoRepository.save(userInfo);
+    if (!userInfo.symptoms.includes(symptomId)) {
+      userInfo.symptoms.push(symptomId);
+    }
 
-    res.status(200).json({ message: "Symptom added to user info", userInfo });
+    await userInfoRepository.save(userInfo);
+    res.status(201).json({ userInfo });
   } catch (error) {
     console.error("Error adding symptom to user info:", error);
     res.status(500).json({ message: "Error adding symptom to user info" });
   }
 });
+
+router.post("/:uid/partner", async (req, res) => {
+  const uid = req.params.uid
+  const code = req.body.code
+  const userInfoRepository = AppDataSource.getRepository(UserInfo);
+
+  try {
+    const userInfo = await userInfoRepository.findOne({ where: { uid: uid } });
+
+    if (!userInfo) {
+      return res.status(404).json({ message: "User info not found" });
+    }
+
+    const partner = await userInfoRepository.findOne({ where: { code: code } });
+
+    if (!partner) {
+      return res.status(404).json({ message: "Partner not found" });
+    }
+
+    userInfo.partnerUid = partner.uid;
+    partner.partnerUid = uid;
+
+    userInfo.partnerMode = true;
+    partner.partnerMode = true;
+
+    await userInfoRepository.save(userInfo);
+    await userInfoRepository.save(partner);
+
+    res.status(201).json({ userInfo });
+  } catch (error) {
+    console.error("Error adding partner to user info:", error);
+    res.status(500).json({ message: "Error adding partner to user info" });
+  }
+});
+
 
 export default router;

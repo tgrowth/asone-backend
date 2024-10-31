@@ -9,6 +9,6 @@ export class PeriodLog {
     uid!: string;
     
     @Column("simple-array")
-    startDates!: string[];
+    periodLogs!: string[];
 }
 

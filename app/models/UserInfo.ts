@@ -41,16 +41,10 @@ export class UserInfo {
   cycleLength!: number;
 
   @Column()
-  lastPeriodStartDate!: string;
-
-  @Column()
-  lastPeriodEndDate!: string;
-
-  @Column()
   isTryingToConceive!: boolean;
 
   @Column()
-  mood!: string;
+  mood!: number;
 
   @Column("int", { array: true })
   symptoms!: number[];
