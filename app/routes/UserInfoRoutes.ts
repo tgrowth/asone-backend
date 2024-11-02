@@ -146,7 +146,7 @@ router.post("/:uid/partner", async (req, res) => {
     await userInfoRepository.save(userInfo);
     await userInfoRepository.save(partner);
 
-    res.status(201).json({ userInfo });
+    res.status(201).json({ message: "Partner added successfully" });
   } catch (error) {
     console.error("Error adding partner to user info:", error);
     res.status(500).json({ message: "Error adding partner to user info" });
