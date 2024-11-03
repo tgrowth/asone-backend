@@ -153,5 +153,32 @@ router.post("/:uid/partner", async (req, res) => {
   }
 });
 
+router.get("/:uid/partner", async (req, res) => {
+  const uid = req.params.uid;
+  const userInfoRepository = AppDataSource.getRepository(UserInfo);
+
+  try {
+    const userInfo = await userInfoRepository.findOne({ where: { uid: uid } });
+
+    if (!userInfo) {
+      return res.status(404).json({ message: "User info not found" });
+    }
+
+    if (!userInfo.partnerUid) {
+      return res.status(404).json({ message: "User has no partner" });
+    }
+
+    const partner = await userInfoRepository.findOne({ where: { uid: userInfo.partnerUid } });
+
+    if (!partner) {
+      return res.status(404).json({ message: "Partner not found" });
+    }
+
+    res.status(200).json({ partner });
+  } catch (error) {
+    console.error("Error retrieving partner info:", error);
+    res.status(500).json({ message: "Error retrieving partner info" });
+  }
+});
 
 export default router;
