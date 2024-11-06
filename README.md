@@ -36,12 +36,7 @@ AsOne Backend is a Node.js server for the AsOne app, which supports tracking men
 ### Installation
 
 1. **Clone the repository**:
-    
-    ```bash
-    git clone <https://github.com/username/asone-backend.git>
-    cd asone-backend
-    
-    ```
+
     
 2. **Install dependencies**:
     
