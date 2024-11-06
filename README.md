@@ -2,16 +2,6 @@
 
 AsOne Backend is a Node.js server for the AsOne app, which supports tracking menstrual cycles, managing user data, and offering personalized recommendations for improving relationships. The backend manages user authentication, data storage, and serves personalized insights through a secure and scalable architecture.
 
-## Table of Contents
-
-1. [Features](https://www.notion.so/Tasks-c4ddd9472f0f45ee82fc2520043a44d1?pvs=21)
-2. [Tech Stack](https://www.notion.so/Tasks-c4ddd9472f0f45ee82fc2520043a44d1?pvs=21)
-3. [Getting Started](https://www.notion.so/Tasks-c4ddd9472f0f45ee82fc2520043a44d1?pvs=21)
-4. [Server Deployment Instructions](https://www.notion.so/Tasks-c4ddd9472f0f45ee82fc2520043a44d1?pvs=21)
-5. [API Documentation](https://www.notion.so/Tasks-c4ddd9472f0f45ee82fc2520043a44d1?pvs=21)
-
----
-
 ## Features
 
 - **User Authentication**: Secure sign-up and login for users.
