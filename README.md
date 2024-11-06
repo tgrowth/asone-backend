@@ -49,7 +49,7 @@ The AsOne iOS app repository can be found [here](https://github.com/tgrowth/ason
     
     ```
     
-3. **Set up Environment Variables**:
+3. **Set up Environment Variables**
 
 
 4. **Run the server locally**:
