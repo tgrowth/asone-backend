@@ -16,6 +16,7 @@ import { UserInfo } from "./models/UserInfo.js";
 import { Symptom } from "./models/Symptom.js";
 import { PeriodLog } from "./models/PeriodLog.js";
 import { LoveLanguagesResult } from "./models/LoveLanguagesResult.js";
+import { SymptomLog } from "./models/SymptomLog.js";
 
 dotenv.config();
 
@@ -50,7 +51,7 @@ const AppDataSource = new DataSource({
   database: "asone_db",
   synchronize: true,
   logging: true,
-  entities: [User, UserInfo, LoveLanguagesResult, Symptom, PeriodLog],
+  entities: [User, UserInfo, LoveLanguagesResult, Symptom, PeriodLog, SymptomLog],
 });
 
 AppDataSource.initialize()

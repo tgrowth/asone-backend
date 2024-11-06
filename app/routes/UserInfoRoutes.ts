@@ -95,29 +95,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/:uid/symptoms/:symptomId", async (req, res) => {
-  const uid = req.params.uid;
-  const symptomId = parseInt(req.params.symptomId);
-  const userInfoRepository = AppDataSource.getRepository(UserInfo);
-
-  try {
-    const userInfo = await userInfoRepository.findOne({ where: { uid: uid } });
-
-    if (!userInfo) {
-      return res.status(404).json({ message: "User info not found" });
-    }
-
-    if (!userInfo.symptoms.includes(symptomId)) {
-      userInfo.symptoms.push(symptomId);
-    }
-
-    await userInfoRepository.save(userInfo);
-    res.status(201).json({ userInfo });
-  } catch (error) {
-    console.error("Error adding symptom to user info:", error);
-    res.status(500).json({ message: "Error adding symptom to user info" });
-  }
-});
 
 router.post("/:uid/partner", async (req, res) => {
   const uid = req.params.uid

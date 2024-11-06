@@ -47,7 +47,7 @@ export class UserInfo {
   mood!: number;
 
   @Column("int", { array: true })
-  symptoms!: number[];
+  symptom_logs!: number[];
 
   @Column()
   partnerMode!: boolean;
