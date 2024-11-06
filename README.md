@@ -2,6 +2,10 @@
 
 AsOne Backend is a Node.js server for the AsOne app, which supports tracking menstrual cycles, managing user data, and offering personalized recommendations for improving relationships. The backend manages user authentication, data storage, and serves personalized insights through a secure and scalable architecture.
 
+## iOS Repository
+
+The AsOne iOS app repository can be found [here](https://github.com/tgrowth/asone-ios).
+
 ## Features
 
 - **User Authentication**: Secure sign-up and login for users.
