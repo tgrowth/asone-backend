@@ -4,7 +4,7 @@ AsOne Backend is a Node.js server for the AsOne app, which supports tracking men
 
 ## iOS Repository
 
-The AsOne iOS app repository can be found [AsOne iOS Repository](https://github.com/tgrowth/asone-ios).
+The AsOne iOS app repository can be found: [AsOne iOS Repository](https://github.com/tgrowth/asone-ios)
 
 ## Project Design
 
