@@ -62,7 +62,7 @@ AppDataSource.initialize()
     app.use("/userInfo", userInfoRoutes);
     app.use("/user", userRoutes);
     app.use("/love_languages_results", loveLanguagesRoutes);
-    app.use("/symptoms", symptomRoutes);
+    app.use("/symptom_logs", symptomRoutes);
     app.use("/period_logs", periodLogRoutes);
 
     const PORT = process.env.PORT || 3000;
